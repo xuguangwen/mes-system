@@ -3,7 +3,7 @@
         <el-menu class="sidebar-el-menu"
                  :default-active="onRoutes"
                  :collapse="collapse"
-                 background-color="#324157"
+                 background-color="#304156"
                  text-color="#bfcbd9"
                  active-text-color="#20a0ff"
                  unique-opened
@@ -114,7 +114,7 @@ export default {
   width: 0;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
-  width: 250px;
+  width: 180px;
 }
 .sidebar > ul {
   height: 100%;
