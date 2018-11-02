@@ -1,7 +1,6 @@
 /*接口请求*/
 import api from '@/api'
 import axios from 'axios'
-
 //设置请求头
 export const setAjaxHeader = (data) => {
   if (!data) return
@@ -24,7 +23,6 @@ export const setAjaxHeader = (data) => {
  * 例3：
  *   this.ajax('user_getPublicKey',{}, e => {
  *     // do something
- *     
  *     // 不写return的话下面的then接收到的e就是undefined
  *     return e
  *   }).then(e => {
@@ -44,3 +42,32 @@ export const ajax = async (fun, data, callback) => {
     // console.log(error);
   }
 }
+export const loadjs = (url) => {
+  return new Promise((resolve, reject) => {
+    let exist = false
+    Array.prototype.slice.call(document.getElementsByTagName('script')).forEach(item => {
+      if (item.src === url) {
+        resolve()
+        exist = true
+      }
+    })
+    // 不存在才加载script
+    if (!exist) {
+      let script = document.createElement('script')
+      script.src = url
+      document.body.appendChild(script)
+      if (document.all) { //如果是IE
+        script.onreadystatechange = () => {
+          if (script.readyState == 'loaded' || script.readyState == 'complete') {
+            resolve()
+          }
+        }
+      } else {
+        script.onload = () => {
+          resolve()
+        }
+      }
+    }
+  })
+}
+
