@@ -30,6 +30,11 @@ export default new Router({
                     meta: { title: '基本表单' }
                 },
                 {
+                  path: '/table',
+                  component: resolve => require(['@/views/table/index.vue'], resolve),
+                  meta: { title: '基本表单' }
+              },
+                {
                     // 拖拽列表组件
                     path: '/drag',
                     component: resolve => require(['@/views/dragList/index.vue'], resolve),

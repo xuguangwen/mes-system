@@ -64,6 +64,11 @@ export default {
         },
         {
           icon: "el-icon-setting",
+          index: "table",
+          title: "表格"
+        },
+        {
+          icon: "el-icon-setting",
           index: "3",
           title: "表单相关",
           subs: [
