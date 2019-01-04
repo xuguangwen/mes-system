@@ -2,13 +2,13 @@
  * @Author: xgw 
  * @Date: 2019-01-03 17:32:28 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 11:24:45
+ * @Last Modified time: 2019-01-04 14:51:02
  */
 
 <template>
     <el-aside class="Menu hasScroll" width="200px">
-    <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" unique-opened router>
-      <template v-for="item in items">
+    <el-menu class="sidebar-el-menu" :default-active="onRoutes" background-color="#102124"  text-color="#fff" active-text-color="#00c561" :collapse="collapse" unique-opened router>
+      <template v-for="item in menuList">
         <template v-if="item.subs">
           <el-submenu :index="item.index" :key="item.index">
             <template slot="title">
@@ -39,49 +39,12 @@
 
 <script>
 import bus from "@/components/bus";
+import Menu from "@/assets/json/menu.js";
 export default {
   data() {
     return {
       collapse: false,
-      items: [
-        {
-          icon: "el-icon-setting",
-          index: "home",
-          title: "系统首页"
-        },
-        {
-          icon: "el-icon-setting",
-          index: "tabs",
-          title: "tab选项卡"
-        },
-        {
-          icon: "el-icon-setting",
-          index: "table",
-          title: "表格"
-        },
-        {
-          icon: "el-icon-setting",
-          index: "3",
-          title: "表单相关",
-          subs: [
-            {
-              index: "form",
-              title: "基本表单"
-            },
-            {
-              index: "3-2",
-              title: "三级菜单",
-              subs: [
-                {
-                  icon: "el-icon-setting",
-                  index: "drag",
-                  title: "拖拽列表"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      menuList: Menu,
     };
   },
   computed: {
@@ -107,23 +70,6 @@ export default {
     height: calc(100vh - 70px);
   .el-menu {
     height: 100%;
-    background-color: $color-menu;
-    .el-submenu__title {
-      color: $color-white;
-      &:hover {
-        background-color: $color-primary;
-      }
-      i {
-        color: $color-white;
-      }
-    }
-    .el-menu-item {
-      color: $color-white;
-    }
-    .el-menu-item:hover,
-    .el-menu-item:focus {
-      background-color: $color-primary;
-    }
   }
 }
 .sidebar::-webkit-scrollbar {

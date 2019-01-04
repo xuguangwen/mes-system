@@ -2,69 +2,87 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 Vue.use(Router);
-
-export default new Router({
-  routes: [{
-      path: '/',
-      redirect: '/home'
+//异步懒加载路由:方案1
+// const first =()=>import(/* webpackChunkName: "group-foo" */ "../components/first.vue");
+//方案2
+// const first = r => require.ensure([], () => r(require('../components/first.vue')), 'chunkname1')
+//模板
+const Layout = resolve => require(['@/views/layout'], resolve)
+const table = r => require(['@/views/table/index'], r)
+export const constantRouterMap = [{
+    path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/',
+    component: Layout,
+    meta: {
+      title: '自述文件'
     },
-    {
-      path: '/',
-      component: resolve => require(['@/views/layout/index.vue'], resolve),
-      meta: {
-        title: '自述文件'
+    children: [{
+        path: '/home',
+        meta: {
+          title: '系统首页'
+        },
+        component: () => import('@/views/home/index.vue')
       },
-      children: [{
-          path: '/home',
-          component: resolve => require(['@/views/home/index.vue'], resolve),
-          meta: {
-            title: '系统首页'
-          }
+      {
+        path: '/form',
+        meta: {
+          title: '基本表单'
         },
-        {
-          path: '/tabs',
-          component: resolve => require(['@/views/tabs/index.vue'], resolve),
-          meta: {
-            title: 'tab选项卡'
+        component: () => import('@/views/form/index.vue')
+      },
+      {
+        path: '/table',
+        component: table,
+        children: [{
+            path: '/pageTable',
+            meta: {
+              title: '分页记忆表单'
+            },
+            component: () =>
+              import('@/views/table/pageTable/index')
+          },
+          {
+            path: '/treeTable',
+            meta: {
+              title: '树形表格'
+            },
+            component: () =>
+              import('@/views/table/treeTable/index')
           }
+        ]
+      },
+      {
+        path: '/404',
+        meta: {
+          title: '404'
         },
-        {
-          path: '/form',
-          component: resolve => require(['@/views/form/index.vue'], resolve),
-          meta: {
-            title: '基本表单'
-          }
+        component: () => import('@/views/errorPage/404.vue')
+      },
+      {
+        path: '/403',
+        meta: {
+          title: '403'
         },
-        {
-          path: '/table',
-          component: resolve => require(['@/views/table/index.vue'], resolve),
-          meta: {
-            title: '基本表单'
-          }
-        },
-        {
-          path: '/404',
-          component: resolve => require(['@/views/errorPage/404.vue'], resolve),
-          meta: {
-            title: '404'
-          }
-        },
-        {
-          path: '/403',
-          component: resolve => require(['@/views/errorPage/403.vue'], resolve),
-          meta: {
-            title: '403'
-          }
-        }
-      ]
-    },
-    {
-      path: '/login',
-      component: resolve => require(['@/views/login/index.vue'], resolve)
-    },
-    {
-      path: '*',
-      redirect: '/404'
-    }
-  ]
+        component: () => import('@/views/errorPage/403.vue')
+      }
+    ]
+  },
+  {
+    path: '/login',
+    component: resolve => require(['@/views/login/index.vue'], resolve)
+  },
+  {
+    path: '*',
+    redirect: '/404'
+  }
+]
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({
+    y: 0
+  }),
+  routes: constantRouterMap
 })
