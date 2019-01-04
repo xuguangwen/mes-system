@@ -1,11 +1,11 @@
 //路由分类
 export default [{
-    icon: "el-icon-setting",
+    icon: "el-icon-xgw-home",
     index: "home",
     title: "系统首页"
   },
   {
-    icon: "el-icon-setting",
+    icon: "el-icon-xgw-biaogeshezhi",
     index: "table",
     title: "表格组件",
     subs: [{
@@ -19,21 +19,20 @@ export default [{
   ]
   },
   {
-    icon: "el-icon-setting",
-    index: "3",
-    title: "表单相关",
+    icon: "el-icon-xgw-graphical",
+    index: "chart",
+    title: "图形相关",
     subs: [{
-        index: "form",
-        title: "基本表单"
+        index: "gannt",
+        title: "甘特图"
       },
       {
-        index: "3-2",
-        title: "三级菜单",
-        subs: [{
-          icon: "el-icon-setting",
-          index: "drag",
-          title: "拖拽列表"
-        }]
+        index: "progress",
+        title: "计划进度图",
+      },
+      {
+        index: "flow",
+        title: "工业流程图",
       }
     ]
   }

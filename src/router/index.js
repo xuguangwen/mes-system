@@ -33,6 +33,7 @@ export const constantRouterMap = [{
         },
         component: () => import('@/views/form/index.vue')
       },
+      //表格组件
       {
         path: '/table',
         component: table,
@@ -53,6 +54,31 @@ export const constantRouterMap = [{
               import('@/views/table/treeTable/index')
           }
         ]
+      },
+      //图形组件
+      {
+        path: '/flow',
+        meta: {
+          title: '工业流程图'
+        },
+        component: () =>
+          import('@/views/chart/flow.vue')
+      },
+      {
+        path: '/gannt',
+        meta: {
+          title: '甘特图'
+        },
+        component: () =>
+          import('@/views/chart/gannt.vue')
+      },
+      {
+        path: '/progress',
+        meta: {
+          title: '计划进度图'
+        },
+        component: () =>
+          import('@/views/chart/progress.vue')
       },
       {
         path: '/404',
