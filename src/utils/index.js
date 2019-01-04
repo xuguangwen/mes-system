@@ -1,6 +1,7 @@
 /**
  * 一些工具方法
  */
+
 let SIGN_REGEXP = /([yMdhsm])(\1*)/g;
 let DEFAULT_PATTERN = 'yyyy-MM-dd';
 
@@ -70,6 +71,7 @@ const utils = {
       return null;
     }
   },
+
   // 增加天数
   addDateByDay(date, days = 0) {
     let timestamp = date.getTime() + days * 1000 * 60 * 60 * 24
@@ -83,35 +85,6 @@ const utils = {
   // 两个日期相差多少天
   getHowManyDays(date1 = new Date(), date2 = new Date()) {
     return Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)
-  },
-  // 根据时间戳转换为 时:分:秒
-  getBootTime(timestamp) {
-    if (!timestamp) {
-      return '00:00:00'
-    } else {
-      let zero = (n) => {
-        return n >= 10 ? n : '0' + n
-      }
-      let h = zero(Math.floor(timestamp / 1000 / 3600))
-      let m = zero(Math.floor((timestamp / 1000 - h * 3600) / 60))
-      let s = zero(Math.floor(timestamp / 1000 - h * 3600 - m * 60))
-      return (`${h}:${m}:${s}`)
-    }
-  },
-  //时间戳转 年-月-日 时:分:秒
-  timestampToDate(time) {
-    let date = new Date(time);
-    let Y = date.getFullYear(),
-      M = date.getMonth() + 1,
-      D = date.getDate(),
-      h = date.getHours(),
-      m = date.getMinutes(),
-      s = date.getSeconds();
-    M = (M < 10 ? `0${M}` : M);
-    h = (h < 10 ? `0${h}` : h);
-    m = (m < 10 ? `0${m}` : m);
-    s = (s < 10 ? `0${s}` : s);
-    return `${Y}-${M}-${D} ${h}:${m}:${s}`;
   },
   //倒计时:cb: 回调，接收剩余秒数,s: 总秒数
   countDown(cb, s) {
@@ -205,6 +178,7 @@ const utils = {
   },
   // 除
   div(a, b) {
+    // console.log(a)
     let c, d
     let e = 0
     let f = 0
@@ -216,6 +190,8 @@ const utils = {
     } catch (g) {}
     c = Number(a.toString().replace('.', ''))
     d = Number(b.toString().replace('.', ''))
+    // console.log(a)
+    // console.log(c,d,e,f)
     return utils.mul(c / d, Math.pow(10, f - e))
   },
   // 获取分页索引
@@ -317,53 +293,6 @@ const utils = {
         break;
     }
     return str;
-  },
-  // 公用正则表达式
-  reg: {
-    telPhone: /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/, // 固话
-    // 手机号
-    tel: /^1[34578]\d{9}$/,
-    // 邮箱
-    email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
-    // 密码：大小写字母、数字组成的6-16位字符,不能纯数字或字母
-    password: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z.]{6,16}$/,
-    // IP
-    ip: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
-  },
-  //验证电话
-  checkTelAndTelPhone(rule, value, callback) {
-    if (!value) {
-      return callback(new Error('电话号码不能为空'))
-    }
-    if (!(utils.reg.telPhone.test(value) || utils.reg.tel.test(value))) {
-      callback(new Error('电话号码格式有误'))
-      return false;
-    } else {
-      callback()
-    }
-  },
-  //验证email
-  checkEmail(rule, value, callback) {
-    if (value === '') {
-      return callback()
-    }
-    if (!(utils.reg.email.test(value))) {
-      callback(new Error('邮箱格式有误'))
-      return false
-    } else {
-      callback()
-    }
-  },
-  checkPassword(rule, value, callback) {
-    if (!value) {
-      return callback(new Error('密码不能为空'))
-    }
-    if (!(utils.reg.password.test(value))) {
-      callback(new Error('密码格式是大小写字母、数字组成的6-16位字符,不能纯数字或字母'))
-      return false
-    } else {
-      callback()
-    }
   },
 }
 export default utils

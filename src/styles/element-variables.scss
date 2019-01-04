@@ -1,5 +1,21 @@
-/* 改变主题色变量 */
-$--color-primary: #00e4bd;
+@import "./vars.scss";
+// 覆盖elementui的默认颜色
+$--color-primary: $color-primary;
+$--color-white: #fff;
+$--color-primary-light-1: mix($--color-white, $--color-primary, 10%) !default; /* 53a8ff */
+$--color-primary-light-2: mix($--color-white, $--color-primary, 20%) !default; /* 66b1ff */
+$--color-primary-light-3: mix($--color-white, $--color-primary, 30%) !default; /* 79bbff */
+$--color-primary-light-4: mix($--color-white, $--color-primary, 40%) !default; /* 8cc5ff */
+$--color-primary-light-5: mix($--color-white, $--color-primary, 50%) !default; /* a0cfff */
+$--color-primary-light-6: mix($--color-white, $--color-primary, 60%) !default; /* b3d8ff */
+$--color-primary-light-7: mix($--color-white, $--color-primary, 70%) !default; /* c6e2ff */
+$--color-primary-light-8: mix($--color-white, $--color-primary, 80%) !default; /* d9ecff */
+$--color-primary-light-9: mix($--color-white, $--color-primary, 90%) !default; /* ecf5ff */
+
+$--color-success: $color-primary !default;
+$--color-warning: $color-warning !default;
+$--color-danger: $color-danger !default;
+$--color-info: $color-info !default;
 
 /* 改变 icon 字体路径变量，必需 */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';

@@ -1,9 +1,5 @@
-@import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './btn.scss';
 @import './common.scss';
+@import './vars.scss';
 
 html,
 body,
@@ -84,7 +80,9 @@ video {
   border: 0;
   outline: none;
   vertical-align: baseline;
-  font-family: "微软雅黑", "Microsoft Yahei", "Hiragino Sans GB", Tahoma, Arial, Helvetica, sans-serif;
+  font-family: '微软雅黑', 'Microsoft Yahei', 'Hiragino Sans GB', Tahoma, Arial,
+  Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 article,
@@ -118,17 +116,17 @@ q {
   quotes: none;
 }
 
-input[type=text]:focus,
-input[type=submit]:focus,
-input[type=radio]:focus,
-input[type=checkbox]:focus,
-input[type=password]:focus {
+input[type='text']:focus,
+input[type='submit']:focus,
+input[type='radio']:focus,
+input[type='checkbox']:focus,
+input[type='password']:focus {
   outline: none;
 }
 
-button[type=button]:focus,
-button[type=submit]:focus,
-input[type=reset]:focus {
+button[type='button']:focus,
+button[type='submit']:focus,
+input[type='reset']:focus {
   outline: none;
 }
 
@@ -187,9 +185,9 @@ input::-moz-focus-inner {
 }
 
 button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+html input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   cursor: pointer;
   -webkit-appearance: button;
 }
@@ -197,23 +195,23 @@ input[type="submit"] {
 label,
 select,
 button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"],
-input[type="radio"],
-input[type="checkbox"] {
+input[type='button'],
+input[type='reset'],
+input[type='submit'],
+input[type='radio'],
+input[type='checkbox'] {
   cursor: pointer;
 }
 
-input[type="search"] {
+input[type='search'] {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
   -webkit-appearance: textfield;
 }
 
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button {
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
@@ -233,7 +231,6 @@ u {
 *:after {
   box-sizing: inherit;
 }
-
 
 a:focus,
 a:active {
@@ -261,7 +258,7 @@ div:focus {
 }
 
 .after:after {
-  content: "";
+  content: '';
   display: block;
   height: 0;
   clear: both;
@@ -269,7 +266,7 @@ div:focus {
 }
 
 .before:before {
-  content: "";
+  content: '';
   display: table;
 }
 
@@ -278,58 +275,74 @@ div:focus {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: " ";
+    content: ' ';
     clear: both;
     height: 0;
   }
+}
+
+#app {
+  height: 100%;
 }
 
 [v-cloak] {
   display: none;
 }
 
-//动态字体颜色
-.activeTxt {
-  color: #00e4bd;
+//主标题
+.fz18 {
+  font-size: 18px;
 }
 
-//详情自定义弹框
-.detailDialog .el-dialog {
-  .el-dialog__body {
-    padding: 10px 20px;
-  }
+.fz16 {
+  font-size: 16px;
 }
 
-//标准dialog
-.editDialog .el-dialog {
-  min-width: 600px;
+//正文
+.fz14 {
+  font-size: 14px;
+}
+
+//辅助文字
+.fz12 {
+  font-size: 12px;
+}
+
+.center{
+  text-align: center;
+}
+
+//定义弹出框样式
+.el-dialog {
+  background-color: $color-top;
+  border-radius: 5px;
 
   .el-dialog__header {
-    font-size: 15px;
-    padding: 10px;
+    padding: 24px;
+    border-radius: 5px;
+    background-color: $color-top;
 
     .el-dialog__title {
-      line-height: 18px;
-      font-size: 15px;
-      color: #303133;
+      color: $color-white;
     }
-
-    .el-dialog__headerbtn {
-      position: absolute;
-      top: 8px;
-      right: 20px;
-      padding: 0;
-      background: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
+    .el-dialog__headerbtn .el-dialog__close {
+      color: $color-white;
+  }
   }
 
   .el-dialog__body {
-    padding: 10px 20px;
+    background-color: $content-color;
   }
+
+  .el-dialog__footer {
+    border-radius: 5px;
+    background-color: $content-color;
+  }
+}
+
+//编辑dialog
+.editDialog .el-dialog {
+  min-width: 600px;
 }
 
 //自定义折叠面板
@@ -347,36 +360,15 @@ div:focus {
   position: relative;
   box-sizing: border-box;
 
-  .el-button+.el-button {
+  .el-button + .el-button {
     margin-left: 0;
   }
 
   table {
-    .el-button+.el-button {
+    .el-button + .el-button {
       margin-left: 10px;
     }
   }
-}
-
-/* 容器 */
-.container {
-  padding: 30px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-/* 面包屑 */
-.crumbs {
-  margin: 10px 0;
-}
-
-.bs {
-  box-sizing: border-box;
-}
-
-.center {
-  text-align: center;
 }
 
 //input 手型

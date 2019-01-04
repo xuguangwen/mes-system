@@ -1,20 +1,18 @@
 <template>
-    <div class="wrapper">
-        <v-head></v-head>
-        <v-sidebar></v-sidebar>
-        <div class="content-box"
-             :class="{'content-collapse':collapse}">
-            <v-tags></v-tags>
-            <div class="content">
-                <transition name="move"
-                            mode="out-in">
-                    <keep-alive :include="tagsList">
-                        <router-view></router-view>
-                    </keep-alive>
-                </transition>
-            </div>
-        </div>
+  <div class="wrapper noScroll">
+    <v-head></v-head>
+    <v-sidebar></v-sidebar>
+    <div class="content-box" :class="{'content-collapse':collapse}">
+      <v-tags></v-tags>
+      <div class="content hasScroll">
+        <transition name="move" mode="out-in">
+          <keep-alive :include="tagsList">
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -51,11 +49,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/styles/vars.scss";
 .wrapper {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   .content-box {
+    height: -moz-calc(100vh - 90px);
+    height: -webkit-calc(100vh - 90px);
+    height: calc(100vh - 90px);
     position: absolute;
     left: 180px;
     right: 0;
@@ -64,18 +65,18 @@ export default {
     padding-bottom: 30px;
     -webkit-transition: left 0.3s ease-in-out;
     transition: left 0.3s ease-in-out;
-    background: #f0f0f0;
+    background-color: $content-color;
     .content {
       width: auto;
       height: 100%;
-      padding: 10px;
+      padding:0 10px;
       overflow-y: scroll;
       box-sizing: border-box;
+      background-color: $content-color;
     }
   }
   .content-collapse {
-  left: 65px;
+    left: 65px;
+  }
 }
-}
-
 </style>

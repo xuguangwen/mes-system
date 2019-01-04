@@ -1,48 +1,40 @@
+/*
+ * @Author: xgw 
+ * @Date: 2019-01-03 17:32:28 
+ * @Last Modified by: xgw
+ * @Last Modified time: 2019-01-04 11:24:45
+ */
+
 <template>
-    <div class="sidebar">
-        <el-menu class="sidebar-el-menu"
-                 :default-active="onRoutes"
-                 :collapse="collapse"
-                 background-color="#304156"
-                 text-color="#bfcbd9"
-                 active-text-color="#20a0ff"
-                 unique-opened
-                 router>
-            <template v-for="item in items">
-                <template v-if="item.subs">
-                    <el-submenu :index="item.index"
-                                :key="item.index">
-                        <template slot="title">
-                            <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
-                        </template>
-                        <template v-for="subItem in item.subs">
-                            <el-submenu v-if="subItem.subs"
-                                        :index="subItem.index"
-                                        :key="subItem.index">
-                                <template slot="title">{{ subItem.title }}</template>
-                                <el-menu-item v-for="(threeItem,i) in subItem.subs"
-                                              :key="i"
-                                              :index="threeItem.index">
-                                    {{ threeItem.title }}
-                                </el-menu-item>
-                            </el-submenu>
-                            <el-menu-item v-else
-                                          :index="subItem.index"
-                                          :key="subItem.index">
-                                {{ subItem.title }}
-                            </el-menu-item>
-                        </template>
-                    </el-submenu>
-                </template>
-                <template v-else>
-                    <el-menu-item :index="item.index"
-                                  :key="item.index">
-                        <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
-                    </el-menu-item>
-                </template>
+    <el-aside class="Menu hasScroll" width="200px">
+    <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" unique-opened router>
+      <template v-for="item in items">
+        <template v-if="item.subs">
+          <el-submenu :index="item.index" :key="item.index">
+            <template slot="title">
+              <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
             </template>
-        </el-menu>
-    </div>
+            <template v-for="subItem in item.subs">
+              <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+                <template slot="title">{{ subItem.title }}</template>
+                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
+                  {{ threeItem.title }}
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="subItem.index" :key="subItem.index">
+                {{ subItem.title }}
+              </el-menu-item>
+            </template>
+          </el-submenu>
+        </template>
+        <template v-else>
+          <el-menu-item :index="item.index" :key="item.index">
+            <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
+          </el-menu-item>
+        </template>
+      </template>
+    </el-menu>
+    </el-aside>
 </template>
 
 <script>
@@ -106,14 +98,33 @@ export default {
 };
 </script>
 
-<style scoped>
-.sidebar {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 70px;
-  bottom: 0;
-  overflow-y: scroll;
+<style lang="scss">
+@import "@/styles/vars.scss";
+.Menu {
+  overflow-x: hidden;
+    height: -moz-calc(100vh - 70px);
+    height: -webkit-calc(100vh - 70px);
+    height: calc(100vh - 70px);
+  .el-menu {
+    height: 100%;
+    background-color: $color-menu;
+    .el-submenu__title {
+      color: $color-white;
+      &:hover {
+        background-color: $color-primary;
+      }
+      i {
+        color: $color-white;
+      }
+    }
+    .el-menu-item {
+      color: $color-white;
+    }
+    .el-menu-item:hover,
+    .el-menu-item:focus {
+      background-color: $color-primary;
+    }
+  }
 }
 .sidebar::-webkit-scrollbar {
   width: 0;

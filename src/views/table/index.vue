@@ -1,3 +1,10 @@
+/*
+ * @Author: xgw 
+ * @Date: 2018-12-24 14:53:33 
+ * @Last Modified by:   xgw 
+ * @Last Modified time: 2018-12-24 14:53:33 
+ */
+
 <template>
   <div>
     <el-button style="float:left;" type="primary" size="small" @click="handleChooseData">获取选中的内容</el-button>
@@ -8,12 +15,7 @@
       <el-table-column prop="idNo" label="身份证号"></el-table-column>
       <el-table-column prop="linkType" label="客户身份"></el-table-column>
     </el-table>
-    <el-pagination :page-size="pagination.pageSize" @current-change="currentChange"
-                            :current-page="pagination.pageNumber"
-                            :page-sizes="pagination.pageSizes"
-                            :total="pagination.total"
-                            :layout="pagination.layout"
-                            @size-change='sizeChange'>
+    <el-pagination :page-size="pagination.pageSize" @current-change="currentChange" :current-page="pagination.pageNumber" :page-sizes="pagination.pageSizes" :total="pagination.total" :layout="pagination.layout" @size-change='sizeChange'>
     </el-pagination>
   </div>
 </template>
@@ -37,21 +39,22 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(()=> {
-          // 初始化渲染
-          this.pagination.pageNumber = 1
-          this.queryData()
-     })
+    this.$nextTick(() => {
+      // 初始化渲染
+      this.pagination.pageNumber = 1;
+      this.queryData();
+    });
   },
   methods: {
-    handleChooseData () {
+    handleChooseData() {
       // 获取之前需要执行一遍记忆分页处理
       this.changePageCoreRecordData();
-       this.$alert(`选中条数为:${this.multipleSelectionAll.length}`, '提示', { confirmButtonText: '确定',
-          callback: action => {
-            alert(JSON.stringify(this.multipleSelectionAll));
-          }
-        });
+      this.$alert(`选中条数为:${this.multipleSelectionAll.length}`, "提示", {
+        confirmButtonText: "确定",
+        callback: action => {
+          alert(JSON.stringify(this.multipleSelectionAll));
+        }
+      });
     },
     // 设置选中的方法
     setSelectRow() {
@@ -133,27 +136,32 @@ export default {
     },
     queryData() {
       // start-----模拟动态分页
-      this.tableData = []
-      this.pagination.total = 100
-      let i = (this.pagination.pageNumber - 1) * this.pagination.pageSize + 1
-      let max = this.pagination.pageNumber * this.pagination.pageSize
-      for (; i <= max; i ++) {
-        this.tableData.push( { personId: i, personName: '小明同志'+i, telphone: '137000000'+i, idNo: i + '10212000000000011', linkType: '业主' })
+      this.tableData = [];
+      this.pagination.total = 100;
+      let i = (this.pagination.pageNumber - 1) * this.pagination.pageSize + 1;
+      let max = this.pagination.pageNumber * this.pagination.pageSize;
+      for (; i <= max; i++) {
+        this.tableData.push({
+          personId: i,
+          personName: "小明同志" + i,
+          telphone: "137000000" + i,
+          idNo: i + "10212000000000011",
+          linkType: "业主"
+        });
       }
       // end------模拟动态分页
       setTimeout(() => {
         this.setSelectRow();
       }, 20);
-    }, 
+    },
     // 得到选中的所有数据
     getAllSelectionData() {
       // 再执行一次记忆勾选数据匹配，目的是为了在当前页操作勾选后直接获取选中数据
       this.changePageCoreRecordData();
       console.log(this.multipleSelectionAll);
     }
-  },
-  
-}
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -174,8 +182,8 @@ a {
   color: #42b983;
 }
 .el-pagination {
-    background: none;
-    text-align: right;
-    margin-top: 10px;
+  background: none;
+  text-align: right;
+  margin-top: 10px;
 }
 </style>

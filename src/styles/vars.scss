@@ -1,0 +1,33 @@
+$color-top:#1d3e3f;
+$color-menu:#102124;
+$content-top:#105b59;
+$content-color:#ecf5ff;
+$color-primary: #00c561;//微信色
+$color-active: #00c561;
+$color-white:#fff;
+$color-success: #00c561;
+$color-error: #d14914;
+$color-warning: #e6a23c;
+$color-danger: #f56c6c;
+$color-info: #909399;
+
+.color-active{
+  color: $color-active !important;
+}
+
+.color-success{
+  color: $color-success !important;
+}
+
+.color-warning{
+  color: $color-warning !important;
+}
+.color-danger{
+  color: $color-danger !important;
+}
+.color-info{
+  color: $color-info !important;
+}
+.color-error{
+  color: $color-error !important;
+}

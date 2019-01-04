@@ -1,38 +1,27 @@
+/*
+ * @Author: xgw 
+ * @Date: 2018-12-24 14:53:09 
+ * @Last Modified by:   xgw 
+ * @Last Modified time: 2018-12-24 14:53:09 
+ */
+
 <template>
-    <div class="login-container"
-         :style="imgbg">
-        <el-form ref="loginForm"
-                 :model="loginForm"
-                 :rules="loginRules"
-                 class="login-form"
-                 auto-complete="on"
-                 label-position="left">
-            <h3 class="title">后台管理系统</h3>
-            <el-form-item prop="username">
-                <el-input v-model="loginForm.username"
-                          name="username"
-                          type="text"
-                          auto-complete="on"
-                          placeholder="username" />
-            </el-form-item>
-            <el-form-item prop="password">
-                <el-input type="password"
-                          v-model="loginForm.password"
-                          name="password"
-                          auto-complete="on"
-                          placeholder="password"
-                          @keyup.enter.native="handleLogin" />
-            </el-form-item>
-            <el-form-item>
-                <el-button :loading="loading"
-                           type="primary"
-                           style="width:100%;"
-                           @click.native.prevent="handleLogin">
-                    登陆
-                </el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+  <div class="login-container" :style="imgbg">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+      <h3 class="title">后台管理系统</h3>
+      <el-form-item prop="username">
+        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input type="password" v-model="loginForm.password" name="password" auto-complete="on" placeholder="password" @keyup.enter.native="handleLogin" />
+      </el-form-item>
+      <el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+          登陆
+        </el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
