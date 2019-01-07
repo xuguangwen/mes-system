@@ -33,7 +33,7 @@
           </el-tooltip>
         </div>
         <!-- 用户头像 -->
-        <div class="user-avator px-2"><img :src="require('@/assets/images/admin.png')"></div>
+        <div class="user-avator px-2"><img :src="require('@/assets/images/admin.gif')"></div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">

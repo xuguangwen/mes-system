@@ -110,6 +110,7 @@ export default {
   overflow: hidden;
   background: #fff;
   padding-right: 120px;
+  border-bottom:1px solid #d8dce5; 
   .tagsBox {
     box-sizing: border-box;
     padding: 0 5px;

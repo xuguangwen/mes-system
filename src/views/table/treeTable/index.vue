@@ -6,7 +6,7 @@
  */
 
 <template>
-  <div class="my-3">
+  <div>
     <tree-table :data="data" :columns="columns" border />
   </div>
 </template>

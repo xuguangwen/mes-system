@@ -7,7 +7,7 @@
 
 <template>
   <div class="home">
-    <div class="websiteDesign mt-3">
+    <div class="websiteDesign">
       <div class="pv">
         <p class="name">浏览量(PV)
           <el-tooltip effect="light" placement="top-start">

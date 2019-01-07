@@ -7,7 +7,7 @@
 
 
  <template>
-  <div class="my-3">
+  <div>
     <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="分页记忆1" name="first">
         <case1></case1>
@@ -17,7 +17,6 @@
       </el-tab-pane>
     </el-tabs>
   </div>
-
 </template>
 <script>
 import case1 from "./case1";

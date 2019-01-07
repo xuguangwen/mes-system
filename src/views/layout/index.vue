@@ -69,7 +69,7 @@ export default {
     .content {
       width: auto;
       height: 100%;
-      padding:0 10px;
+      padding:10px;
       overflow-y: scroll;
       box-sizing: border-box;
       background-color: $content-color;

@@ -6,8 +6,8 @@
  */
 
 <template>
-    <el-aside class="Menu hasScroll" width="200px">
-    <el-menu class="sidebar-el-menu" :default-active="onRoutes" background-color="#102124"  text-color="#fff" active-text-color="#00c561" :collapse="collapse" unique-opened router>
+  <el-aside class="Menu hasScroll" width="200px">
+    <el-menu class="sidebar-el-menu" :default-active="onRoutes" background-color="#102124" text-color="#fff" active-text-color="#00c561" :collapse="collapse" unique-opened router>
       <template v-for="item in menuList">
         <template v-if="item.subs">
           <el-submenu :index="item.index" :key="item.index">
@@ -34,7 +34,7 @@
         </template>
       </template>
     </el-menu>
-    </el-aside>
+  </el-aside>
 </template>
 
 <script>
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       collapse: false,
-      menuList: Menu,
+      menuList: Menu
     };
   },
   computed: {
@@ -65,9 +65,9 @@ export default {
 @import "@/styles/vars.scss";
 .Menu {
   overflow-x: hidden;
-    height: -moz-calc(100vh - 70px);
-    height: -webkit-calc(100vh - 70px);
-    height: calc(100vh - 70px);
+  height: -moz-calc(100vh - 70px);
+  height: -webkit-calc(100vh - 70px);
+  height: calc(100vh - 70px);
   .el-menu {
     height: 100%;
   }
