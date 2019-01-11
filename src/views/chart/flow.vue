@@ -2,26 +2,54 @@
  * @Author: xgw 
  * @Date: 2019-01-04 17:30:15 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 18:12:36
+ * @Last Modified time: 2019-01-11 16:17:04
  */
 <!--工业流程图-->
  <template>
-  <div id="wrap">
+  <div class="flowChart">
+    <div class="patternChage">
+    <el-switch v-model="pattern" active-text="添加附属信息" inactive-text="绘图模式" :width="50" @change='switchChange'>
+    </el-switch>
+    </div>
     <div id="chart-wrap" style="width: 100%; display: flex; justify-content: space-between">
       <div id="chart-palette" style="width: 200px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black"></div>
-      <div id="chart-diagram" style="flex-grow: 1;min-height: 500px; border: solid 1px black"></div>
+      <div id="chart-diagram" style="flex-grow: 1;min-height: 400px; border: solid 1px black"></div>
     </div>
     <!-- <el-button type="primary" @click="saveData">console数据</el-button> -->
+    <el-dialog :title="EUData.execute_unit_name+'详情'" width="500px" :visible.sync="outerVisible" append-to-body>
+      <el-form ref="form" :model="EUData" label-width="100px" label-position="left">
+        <el-form-item label="负责人">
+          <el-input v-model="EUData.responsibleName"></el-input>
+        </el-form-item>
+        <el-form-item label="执行单元名称">
+          <span>{{EUData.execute_unit_name}}</span>
+        </el-form-item>
+        <el-form-item label="排产量">
+          <span>{{filterFn.thousandSeparator(output)}}</span>
+        </el-form-item>
+        <el-form-item label="计划时间">
+          <span>{{fiterTime(EUData.time[0])+'——'+fiterTime(EUData.time[1])}}</span>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
-
 <script>
 import { gojsUrl } from "@/api/cdn.js";
+import utils from "@/utils/index";
 export default {
   name: "flowChart",
   data() {
     return {
+      pattern: false,
       gojsLoaded: false,
+      outerVisible: false,
+      EUData: {
+        execute_unit_name: "",
+        responsibleName: "许广文",
+        output:"1213455",
+        time: ['2018-11-02 12:22:12','2019-01-11 13:03:34']
+      }, //执行单元信息
       chartData: {
         class: "go.GraphLinksModel",
         linkFromPortIdProperty: "fromPort",
@@ -91,7 +119,6 @@ export default {
             __gohashid: 39327
           }
         ],
-
         linkDataArray: [
           {
             from: 0,
@@ -415,12 +442,20 @@ export default {
       }
     };
   },
+  computed:{
+    output: function () {
+      return utils.numberFilter(this.EUData.output)
+    }
+  },
   mounted() {
     this.loadjs(gojsUrl).then(() => {
       this.init();
     });
   },
   methods: {
+    fiterTime(str){
+      return utils.formatDate.format(new Date(str),'yyyy-MM-dd hh-mm-ss');
+    },
     /************第二部分图行的绘制***********/
     //初始化e-r图
     init() {
@@ -549,7 +584,7 @@ export default {
             $(
               go.Shape,
               "RoundedRectangle",
-              { fill: "rgb(0, 153, 153)", stroke: null },
+              { fill: "rgb(230, 162, 60)", stroke: null },
               new go.Binding("figure", "figure")
             ),
             $(
@@ -764,12 +799,11 @@ export default {
         //e.subject.part.data数据源
         let obj = e.subject.part.data;
         if (
-          (obj.category === "Next" || obj.category === "warningNext") &&
-          !_self.calculate
+          (obj.category === "Next" || obj.category === "warningNext") && _self.pattern
         ) {
           //判断点击的是实体=>附加信息框弹出
-          // _self.outerVisible = true;
-          // _self.queryPlanProductionUnit(_self.planId, obj.key);
+          _self.outerVisible = true;
+          _self.EUData.execute_unit_name=obj.text;
         }
       });
       // 这个监听器是由“link绘制”和“链接”的图表所调用的。
@@ -788,17 +822,16 @@ export default {
         scrollsPageOnFocus: false,
         nodeTemplateMap: myDiagram.nodeTemplateMap,
         model: new go.GraphLinksModel([
-          // specify the contents of the Palette
           { category: "Start", text: "开始" },
-          // {
-          //   category: "Judge",
-          //   text: "逻辑判断",
-          //   figure: "Diamond"
-          // },
-          { category: "End", text: "结束" },
-          { category: "Comment", text: "注释" },
           { category: "Next", text: "执行单元" },
-          { category: "warningNext", text: "特殊执行单元" }
+          { category: "warningNext", text: "特殊执行单元" },
+          { category: "Comment", text: "注释" },
+          {
+            category: "Judge",
+            text: "逻辑判断",
+            figure: "Diamond"
+          },
+          { category: "End", text: "结束" }
         ])
       });
     },
@@ -812,18 +845,30 @@ export default {
     //初始化date数组绘图
     load() {
       myDiagram.model = go.Model.fromJson(this.chartData);
-      myDiagram.model.linkFromPortIdProperty = "fromPort"; //必须记住portIds
+      myDiagram.model.linkFromPortIdProperty = "fromPort";
       myDiagram.model.linkToPortIdProperty = "toPort";
       // myDiagram.isReadOnly = true; //允许用户滚动和缩放，并选择部分，但不插入、删除或拖动或修改部件
+      // myDiagram.isReadOnly = !this.pattern; //允许用户滚动和缩放，并选择部分，但不插入、删除或拖动或修改部件
+    },
+    switchChange(val){
+      myDiagram.isReadOnly=val;
     },
     saveData() {
       console.log(
-        "dsa:",
+        "链接顺序：",
         JSON.stringify(this.chartData.linkDataArray),
-        "adad",
+        "实体数组：",
         JSON.stringify(this.chartData.nodeDataArray)
       );
     }
   }
 };
 </script>
+<style lang="scss" scoped>
+.flowChart {
+  .patternChage {
+    margin: 20px 0;
+  }
+}
+</style>
+

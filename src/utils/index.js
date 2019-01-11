@@ -294,5 +294,6 @@ const utils = {
     }
     return str;
   },
+  //
 }
 export default utils

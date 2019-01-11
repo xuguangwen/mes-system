@@ -1,6 +1,6 @@
 /**过滤类，运用于全局template模板，挂载到了vue原型**/
 const filterFn = {
-  outputmoney(number) {
+  thousandSeparator(number) {
     if (isNaN(number) || number == "") return "";
     number = Math.round(number * 100) / 100;
     if (number < 0)
