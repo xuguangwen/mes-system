@@ -2,11 +2,11 @@
  * @Author: xgw 
  * @Date: 2019-01-04 17:30:15 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-11 16:17:04
+ * @Last Modified time: 2019-01-16 15:34:19
  */
 <!--工业流程图-->
  <template>
-  <div class="flowChart">
+  <div class="flowChart" v-loading="loading">
     <div class="patternChage">
     <el-switch v-model="pattern" active-text="添加附属信息" inactive-text="绘图模式" :width="50" @change='switchChange'>
     </el-switch>
@@ -43,6 +43,7 @@ export default {
     return {
       pattern: false,
       gojsLoaded: false,
+      loading:true,
       outerVisible: false,
       EUData: {
         execute_unit_name: "",
@@ -449,6 +450,7 @@ export default {
   },
   mounted() {
     this.loadjs(gojsUrl).then(() => {
+      this.loading=false;
       this.init();
     });
   },
@@ -866,6 +868,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .flowChart {
+  padding: 10px;
   .patternChage {
     margin: 20px 0;
   }

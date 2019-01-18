@@ -2,11 +2,11 @@
  * @Author: xgw 
  * @Date: 2018-11-30 11:33:32 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 16:09:51
+ * @Last Modified time: 2019-01-11 20:33:22
  */
 
 <template>
-  <div>
+  <div class="TreeTableDemo">
     <tree-table :data="data" :columns="columns" border />
   </div>
 </template>
@@ -124,3 +124,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.TreeTableDemo{
+  padding: 10px;
+}
+</style>
+

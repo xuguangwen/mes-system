@@ -4,7 +4,7 @@
     <v-sidebar></v-sidebar>
     <div class="content-box" :class="{'content-collapse':collapse}">
       <v-tags></v-tags>
-      <div class="content hasScroll">
+      <div class="content ">
         <transition name="move" mode="out-in">
           <keep-alive :include="tagsList">
             <router-view></router-view>
@@ -14,7 +14,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import vHead from "@/views/layout/components/Header.vue";
 import vSidebar from "@/views/layout/components/Sidebar.vue";
@@ -54,25 +53,25 @@ export default {
   width: 100%;
   height: 100%;
   .content-box {
-    height: -moz-calc(100vh - 90px);
-    height: -webkit-calc(100vh - 90px);
-    height: calc(100vh - 90px);
+    overflow-x: hidden;
+    height: -moz-calc(100vh - 70px);
+    height: -webkit-calc(100vh - 70px);
+    height: calc(100vh - 70px);
     position: absolute;
-    left: 180px;
+    left: 200px;
     right: 0;
     top: 70px;
     bottom: 0;
-    padding-bottom: 30px;
     -webkit-transition: left 0.3s ease-in-out;
     transition: left 0.3s ease-in-out;
     background-color: $content-color;
     .content {
-      width: auto;
-      height: 100%;
-      padding:10px;
-      overflow-y: scroll;
-      box-sizing: border-box;
+      padding: 0;
+      height: -moz-calc(100vh - 120px);
+      height: -webkit-calc(100vh - 120px);
+      height: calc(100vh - 120px);
       background-color: $content-color;
+      overflow-y: auto;//这里加未后面布局进度条滚动
     }
   }
   .content-collapse {

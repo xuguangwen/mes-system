@@ -2,12 +2,12 @@
  * @Author: xgw 
  * @Date: 2018-12-24 14:53:33 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 15:55:56
+ * @Last Modified time: 2019-01-11 20:32:25
  */
 
 
  <template>
-  <div>
+  <div class="tableBox">
     <el-tabs v-model="activeName2" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="分页记忆1" name="first">
         <case1></case1>
@@ -39,3 +39,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.tableBox{
+  padding: 10px;
+}
+</style>

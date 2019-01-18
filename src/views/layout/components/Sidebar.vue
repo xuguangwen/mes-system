@@ -2,7 +2,7 @@
  * @Author: xgw 
  * @Date: 2019-01-03 17:32:28 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 14:51:02
+ * @Last Modified time: 2019-01-15 20:46:59
  */
 
 <template>
@@ -70,13 +70,15 @@ export default {
   height: calc(100vh - 70px);
   .el-menu {
     height: 100%;
+    border: none;//这里很重要的
   }
+  
 }
 .sidebar::-webkit-scrollbar {
   width: 0;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
-  width: 180px;
+  width: 200px;
 }
 .sidebar > ul {
   height: 100%;

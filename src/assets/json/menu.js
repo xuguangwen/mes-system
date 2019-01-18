@@ -22,9 +22,18 @@ export default [{
     icon: "el-icon-xgw-graphical",
     index: "chart",
     title: "图形相关",
-    subs: [{
+    subs: [
+      {
+        index: "resizable",
+        title: "可变窗口",
+      },
+      {
         index: "gannt",
         title: "甘特图"
+      },
+      {
+        index: "planSchedule",
+        title: "计划排程甘特图"
       },
       {
         index: "progress",
@@ -35,5 +44,16 @@ export default [{
         title: "工业流程图",
       }
     ]
-  }
+  },
+  {
+    icon: "el-icon-share",
+    index: "demo",
+    title: "简单例子",
+    subs: [
+      {
+        index: "drag",
+        title: "拖拽",
+      },
+    ]
+  },
 ]

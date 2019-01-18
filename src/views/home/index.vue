@@ -2,11 +2,11 @@
  * @Author: xgw 
  * @Date: 2019-01-03 16:03:45 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 13:16:44
+ * @Last Modified time: 2019-01-11 20:34:19
  */
 
 <template>
-  <div class="home">
+  <div class="home hasScroll" >
     <div class="websiteDesign">
       <div class="pv">
         <p class="name">浏览量(PV)
@@ -235,6 +235,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
+  height: -moz-calc(100vh - 120px);
+    height: -webkit-calc(100vh - 120px);
+    height: calc(100vh - 120px);
+  padding: 10px;
   .websiteDesign {
     display: flex;
     height: 136px;

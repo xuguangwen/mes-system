@@ -2,16 +2,16 @@
  * @Author: xgw 
  * @Date: 2019-01-03 17:32:05 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-04 17:24:55
+ * @Last Modified time: 2019-01-16 20:36:03
  */
 
 <template>
   <div class="header">
     <!-- 折叠按钮 -->
+    <div class="logo">{{$t('mes.systemName')}}</div>
     <div class="collapse-btn" @click="collapseChage">
       <i class="el-icon-menu"></i>
     </div>
-    <div class="logo">{{$t('mes.systemName')}}</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 中英文 -->
@@ -165,13 +165,13 @@ export default {
 }
 .collapse-btn {
   float: left;
-  padding: 0 21px;
   cursor: pointer;
   line-height: 70px;
 }
 .header .logo {
+  text-align: center;
   float: left;
-  width: 250px;
+  width: 200px;
   line-height: 70px;
 }
 .header-right {

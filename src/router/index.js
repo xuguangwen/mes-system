@@ -70,7 +70,15 @@ export const constantRouterMap = [{
           title: '甘特图'
         },
         component: () =>
-          import('@/views/chart/gannt.vue')
+          import('@/views/chart/ganntChart.vue')
+      },
+      {
+        path: '/planSchedule',
+        meta: {
+          title: '计划排程甘特图'
+        },
+        component: () =>
+          import('@/views/chart/planSchedule.vue')
       },
       {
         path: '/progress',
@@ -79,6 +87,22 @@ export const constantRouterMap = [{
         },
         component: () =>
           import('@/views/chart/progress.vue')
+      },
+      {
+        path: '/resizable',
+        meta: {
+          title: '可变窗口'
+        },
+        component: () =>
+          import('@/views/chart/Resizable.vue')
+      },
+      {
+        path: '/drag',
+        meta: {
+          title: '拖拽'
+        },
+        component: () =>
+          import('@/views/demo/drag.vue')
       },
       {
         path: '/404',
