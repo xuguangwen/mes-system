@@ -120,6 +120,33 @@ const utils = {
     }
     return obj2;
   },
+
+  //生成几位随机数
+  getUUID(len) {
+    len = len || 6;
+    len = parseInt(len, 10);
+    len = isNaN(len) ? 6 : len;
+    var seed = "0123456789abcdefghijklmnopqrstubwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ";
+    var seedLen = seed.length - 1;
+    var uuid = "";
+    while (len--) {
+      uuid += seed[Math.round(Math.random() * seedLen)];
+    }
+    return uuid;
+  },
+  //对象深拷贝
+  deepcopy (source) {
+    if (!source) {
+      return source;
+    }
+    let sourceCopy = source instanceof Array ? [] : {};
+    for (let item in source) {
+      sourceCopy[item] = typeof source[item] === 'object' ? deepcopy(source[item]) : source[item];
+    }
+    return sourceCopy;
+  },
+
+
   // 设置存储
   setQuery(key, value) {
     if (process.server) return

@@ -54,6 +54,18 @@ export default [{
         index: "drag",
         title: "拖拽",
       },
+      {
+        index: "treeChart",
+        title: "树形图",
+      },
+      {
+        index: "organizationChart",
+        title: "组织架构图",
+      },
+      {
+        index: "vueDialogTable",
+        title: "拖拽表格",
+      },
     ]
   },
 ]

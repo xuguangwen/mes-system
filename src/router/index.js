@@ -96,6 +96,7 @@ export const constantRouterMap = [{
         component: () =>
           import('@/views/chart/Resizable.vue')
       },
+      //demo
       {
         path: '/drag',
         meta: {
@@ -103,6 +104,30 @@ export const constantRouterMap = [{
         },
         component: () =>
           import('@/views/demo/drag.vue')
+      },
+      {
+        path: '/treeChart',
+        meta: {
+          title: '树形图'
+        },
+        component: () =>
+          import('@/views/demo/treeChart.vue')
+      },
+      {
+        path: '/organizationChart',
+        meta: {
+          title: '组织架构图'
+        },
+        component: () =>
+          import('@/views/demo/organizationChart.vue')
+      },
+      {
+        path: '/vueDialogTable',
+        meta: {
+          title: '拖拽表格'
+        },
+        component: () =>
+          import('@/views/demo/vueDialogTable.vue')
       },
       {
         path: '/404',
