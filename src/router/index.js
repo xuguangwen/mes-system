@@ -52,18 +52,42 @@ export const constantRouterMap = [{
             },
             component: () =>
               import('@/views/table/treeTable/index')
+          },
+          {
+            path: '/customTreeTable',
+            meta: {
+              title: '自定义列表格'
+            },
+            component: () =>
+              import('@/views/table/treeTable/customTreeTable')
+          },
+          {
+            path: '/LLCTreeTable',
+            meta: {
+              title: '低阶码树表格'
+            },
+            component: () =>
+              import('@/views/table/treeTable/LLCTreeTable')
           }
         ]
       },
       //图形组件
+      // {
+      //   path: '/flow',
+      //   meta: {
+      //     title: '工业流程图'
+      //   },
+      //   component: () =>
+      //     import('@/views/chart/flow.vue')
+      // },
       {
-        path: '/flow',
-        meta: {
-          title: '工业流程图'
+          path: '/flow',
+          meta: {
+            title: '工业流程图'
+          },
+          component: () =>
+            import('@/views/demo/ERcomponent.vue')
         },
-        component: () =>
-          import('@/views/chart/flow.vue')
-      },
       {
         path: '/gannt',
         meta: {
@@ -114,12 +138,12 @@ export const constantRouterMap = [{
           import('@/views/demo/treeChart.vue')
       },
       {
-        path: '/organizationChart',
+        path: '/calendarChart',
         meta: {
-          title: '组织架构图'
+          title: '计划日历'
         },
         component: () =>
-          import('@/views/demo/organizationChart.vue')
+          import('@/views/demo/calendarChart.vue')
       },
       {
         path: '/vueDialogTable',
@@ -128,6 +152,14 @@ export const constantRouterMap = [{
         },
         component: () =>
           import('@/views/demo/vueDialogTable.vue')
+      },
+      {
+        path: '/globalDialog',
+        meta: {
+          title: '全局弹框'
+        },
+        component: () =>
+          import('@/views/demo/globalDialog.vue')
       },
       {
         path: '/404',

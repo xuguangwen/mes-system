@@ -15,6 +15,14 @@ export default [{
     {
       index: "treeTable",
       title: "树形表格",
+    },
+    {
+      index: "customTreeTable",
+      title: "自定义列表格",
+    },
+    {
+      index:"LLCTreeTable",
+      title:"低阶码树表格"
     }
   ]
   },
@@ -59,12 +67,16 @@ export default [{
         title: "树形图",
       },
       {
-        index: "organizationChart",
-        title: "组织架构图",
+        index: "calendarChart",
+        title: "计划日历",
       },
       {
         index: "vueDialogTable",
         title: "拖拽表格",
+      },
+      {
+        index: "globalDialog",
+        title: "全局弹框",
       },
     ]
   },
