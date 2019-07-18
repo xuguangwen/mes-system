@@ -2,7 +2,7 @@
  * @Author: xgw 
  * @Date: 2019-01-04 17:30:15 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-16 15:34:19
+ * @Last Modified time: 2019-06-01 14:53:05
  */
 <!--工业流程图-->
  <template>
@@ -25,7 +25,7 @@
           <span>{{EUData.execute_unit_name}}</span>
         </el-form-item>
         <el-form-item label="排产量">
-          <span>{{filterFn.thousandSeparator(output)}}</span>
+          <span>{{output|toThousandFilter}}</span>
         </el-form-item>
         <el-form-item label="计划时间">
           <span>{{fiterTime(EUData.time[0])+'——'+fiterTime(EUData.time[1])}}</span>

@@ -81,13 +81,13 @@ export const constantRouterMap = [{
       //     import('@/views/chart/flow.vue')
       // },
       {
-          path: '/flow',
-          meta: {
-            title: '工业流程图'
-          },
-          component: () =>
-            import('@/views/demo/ERcomponent.vue')
+        path: '/flow',
+        meta: {
+          title: '工业流程图'
         },
+        component: () =>
+          import('@/views/demo/ERcomponent.vue')
+      },
       {
         path: '/gannt',
         meta: {
@@ -161,6 +161,15 @@ export const constantRouterMap = [{
         component: () =>
           import('@/views/demo/globalDialog.vue')
       },
+
+      {
+        path: 'drag-dialog',
+        meta: {
+          title: '拖拽 Dialog'
+        },
+        component: () => import('@/views/components-demo/dragDialog')
+      },
+
       {
         path: '/404',
         meta: {

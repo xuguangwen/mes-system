@@ -78,6 +78,10 @@ export default [{
         index: "globalDialog",
         title: "全局弹框",
       },
+      {
+        index:'drag-dialog',
+        title:'拖拽 Dialog'
+      }
     ]
   },
 ]

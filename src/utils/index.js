@@ -71,7 +71,6 @@ const utils = {
       return null;
     }
   },
-
   // 增加天数
   addDateByDay(date, days = 0) {
     let timestamp = date.getTime() + days * 1000 * 60 * 60 * 24
@@ -86,6 +85,45 @@ const utils = {
   getHowManyDays(date1 = new Date(), date2 = new Date()) {
     return Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24)
   },
+  // 根据时间戳转换为 时:分:秒
+  getBootTime(timestamp) {
+    if (!timestamp) {
+      return '00:00:00'
+    } else {
+      let zero = (n) => {
+        return n >= 10 ? n : '0' + n
+      }
+      let h = zero(Math.floor(timestamp / 1000 / 3600))
+      let m = zero(Math.floor((timestamp / 1000 - h * 3600) / 60))
+      let s = zero(Math.floor(timestamp / 1000 - h * 3600 - m * 60))
+      return (`${h}:${m}:${s}`)
+    }
+  },
+  //时间戳转 时:分
+  timestampToHM(time) {
+    let date = new Date(time),
+      h = date.getHours(),
+      m = date.getMinutes();
+    h = (h < 10 ? `0${h}` : h);
+    m = (m < 10 ? `0${m}` : m);
+    return `${h}:${m}`;
+  },
+  //时间戳转 年-月-日
+  timestampToYMD(time) {
+    let date = new Date(time);
+    let Y = date.getFullYear(),
+      M = date.getMonth() + 1,
+      D = date.getDate(),
+      h = date.getHours(),
+      m = date.getMinutes(),
+      s = date.getSeconds();
+    M = (M < 10 ? `0${M}` : M);
+    h = (h < 10 ? `0${h}` : h);
+    m = (m < 10 ? `0${m}` : m);
+    s = (s < 10 ? `0${s}` : s);
+    return `${Y}-${M}-${D}`;
+  },
+
   //倒计时:cb: 回调，接收剩余秒数,s: 总秒数
   countDown(cb, s) {
     let timer = setInterval(() => {
@@ -120,33 +158,6 @@ const utils = {
     }
     return obj2;
   },
-
-  //生成几位随机数
-  getUUID(len) {
-    len = len || 6;
-    len = parseInt(len, 10);
-    len = isNaN(len) ? 6 : len;
-    var seed = "0123456789abcdefghijklmnopqrstubwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ";
-    var seedLen = seed.length - 1;
-    var uuid = "";
-    while (len--) {
-      uuid += seed[Math.round(Math.random() * seedLen)];
-    }
-    return uuid;
-  },
-  //对象深拷贝
-  deepcopy (source) {
-    if (!source) {
-      return source;
-    }
-    let sourceCopy = source instanceof Array ? [] : {};
-    for (let item in source) {
-      sourceCopy[item] = typeof source[item] === 'object' ? deepcopy(source[item]) : source[item];
-    }
-    return sourceCopy;
-  },
-
-
   // 设置存储
   setQuery(key, value) {
     if (process.server) return
@@ -205,7 +216,6 @@ const utils = {
   },
   // 除
   div(a, b) {
-    // console.log(a)
     let c, d
     let e = 0
     let f = 0
@@ -217,14 +227,9 @@ const utils = {
     } catch (g) {}
     c = Number(a.toString().replace('.', ''))
     d = Number(b.toString().replace('.', ''))
-    // console.log(a)
-    // console.log(c,d,e,f)
     return utils.mul(c / d, Math.pow(10, f - e))
   },
-  // 获取分页索引
-  getHeadNumAdapter(page = 1, pageSize = 0, index = 0) {
-    return utils.mul(pageSize, page - 1) + index + 1
-  },
+
   // 下载文件
   downloadFile(url) {
     let form = document.createElement('form')
@@ -260,8 +265,9 @@ const utils = {
     }
     location.replace(hash + '?' + str)
   },
-  //数量过滤
-  numberFilter(str) {
+
+  //数量过滤：1：四舍五入，精确多少位
+  numberFilter(str, num) {
     let str1,
       str2,
       result,
@@ -280,16 +286,14 @@ const utils = {
         str2 = str
           .substring(str.indexOf(".") + 1, str.length)
           .replace(/[^\d]/g, "")
-          .substring(0, 3);
-        if (str2.length === 3) {
-          let strlast = parseInt(str2.substring(2, 3));
+          .substring(0, (Number(num) + 1));
+        if (str2.length === (Number(num) + 1)) {
+          let strlast = parseInt(str2.substring(str2.length - 1, str2.length));
           if (strlast <= 4) {
-            str2 = str2.substring(0, 2);
+            str2 = str2.substring(0, Number(num));
           } else if (strlast >= 5) {
-            str2 = parseInt(str2.substring(0, 2)) + 1 + "";
+            str2 = parseInt(str2.substring(0, Number(num))) + 1 + "";
           }
-        } else {
-          str2 = utils.countnum(str2);
         }
         if (str1 === "") {
           if (str2 === "00") {
@@ -307,20 +311,132 @@ const utils = {
     }
     return result;
   },
-  countnum(str) {
-    let l = str.length;
-    switch (l) {
-      case 0:
-        str += "00";
-        break;
-      case 1:
-        str += "0";
-        break;
-      default:
-        break;
-    }
-    return str;
+
+  //金额千分符
+  outputmoney(number) {
+    if (isNaN(number) || number == "") return "";
+    number = Math.round(number * 100) / 100;
+    if (number < 0)
+      return '-' + utils.outputdollars(Math.floor(Math.abs(number) - 0) + '') + utils.outputcents(Math.abs(number) - 0);
+    else
+      return utils.outputdollars(Math.floor(number - 0) + '') + utils.outputcents(number - 0);
   },
-  //
+  outputdollars(number) {
+    if (number.length <= 3)
+      return (number == '' ? '0' : number);
+    else {
+      let mod = number.length % 3;
+      let output = (mod == 0 ? '' : (number.substring(0, mod)));
+      for (let i = 0; i < Math.floor(number.length / 3); i++) {
+        if ((mod == 0) && (i == 0))
+          output += number.substring(mod + 3 * i, mod + 3 * i + 3);
+        else
+          output += ',' + number.substring(mod + 3 * i, mod + 3 * i + 3);
+      }
+      return (output);
+    }
+  },
+  outputcents(amount) {
+    amount = Math.round(((amount) - Math.floor(amount)) * 100);
+    return (amount < 10 ? '.0' + amount : '.' + amount);
+  },
+
+
+  // 元素全屏
+  requestFullScreen(element) {
+    // 判断各种浏览器，找到正确的方法
+    let requestMethod = element.requestFullScreen || // W3C
+      element.webkitRequestFullScreen || // Chrome等
+      element.mozRequestFullScreen || // FireFox
+      element.msRequestFullScreen // IE11
+    if (requestMethod) {
+      requestMethod.call(element)
+    } else if (typeof window.ActiveXObject !== 'undefined') { // for Internet Explorer
+      let wscript = new window.ActiveXObject('WScript.Shell')
+      if (wscript !== null) {
+        wscript.SendKeys('{F11}')
+      }
+    }
+  },
+  // 退出全屏 判断浏览器种类
+  exitFullScreen() {
+    // 判断各种浏览器，找到正确的方法
+    let exitMethod = document.exitFullscreen || // W3C
+      document.mozCancelFullScreen || // Chrome等
+      document.webkitExitFullscreen || // FireFox
+      document.webkitExitFullscreen; // IE11
+    if (exitMethod) {
+      exitMethod.call(document);
+    } else if (typeof window.ActiveXObject !== 'undefined') { // for Internet Explorer
+      var wscript = new window.ActiveXObject('WScript.Shell')
+      if (wscript !== null) {
+        wscript.SendKeys('{F11}')
+      }
+    }
+  },
+  // 是不是处于全屏状态
+  checkFullScreen() {
+    var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled
+    // to fix : false || undefined == undefined
+    if (isFull === undefined) {
+      isFull = false
+    }
+    return isFull
+  },
+
+
+  // 公用打印
+  print(parent) {
+    let el = document.getElementById('__print-wrap')
+    if (!el) {
+      el = document.createElement('div')
+    }
+    el.id = '__print-wrap'
+    el.className = 'printable print-only'
+    el.style.width = '100%'
+    el.innerHTML = parent.innerHTML
+    // 小图标不打印
+    el.querySelectorAll('.el-collapse-item__arrow').forEach(item => {
+      item.classList.add('print-exclude')
+    })
+    el.querySelectorAll('.el-collapse-item__wrap').forEach(item => {
+      item.style.border = 'none'
+    })
+    document.body.appendChild(el)
+    window.print()
+  },
+  // 深度拷贝
+  deepCopy: function (o) {
+    if (o instanceof Array) {
+      let n = [];
+      for (let i = 0; i < o.length; ++i) {
+        n[i] = utils.deepCopy(o[i]);
+      }
+      return n;
+    } else if (o instanceof Object) {
+      let n = {}
+      for (let i in o) {
+        n[i] = utils.deepCopy(o[i]);
+      }
+      return n;
+    } else {
+      return o;
+    }
+  },
+  // 根据数组的id, pId生成二叉树，调用示例
+  getTree(rootId, list) {
+    let arr = []
+    for (let i = 0, len = list.length; i < len; i++) {
+      if (list[i].pId === rootId) {
+        list[i].children = this.getTree(list[i].id, list)
+        arr.push(list[i])
+      }
+    }
+    return arr
+  },
+  // 获取分页索引
+  getHeadNumAdapter(page = 1, pageSize = 0, index = 0) {
+    return utils.mul(pageSize, page - 1) + index + 1
+  },
 }
 export default utils

@@ -10,16 +10,23 @@ import '@/styles/index.scss' // global css
 import '@/assets/icon/iconfont.css' //icon图标
 import "babel-polyfill";
 import {ajax,loadjs} from './utils/ajax'; //引入封装的工具类和方法
-import filterFn from './utils/filter'
 import gojs from "gojs"
+import * as filters from './filters' // global filters
 Vue.prototype.gojs=gojs
+
 Vue.config.productionTip = false
-//全局过滤
-Vue.prototype.filterFn = filterFn
+
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 Vue.prototype.ajax = ajax; //设置请求方法
+
 Vue.prototype.loadjs = loadjs; //加载插件包例如echart，gojs
+
 Vue.use(MesDialogUI);
+
 Vue.use(ElementUI);
+
 new Vue({
   router,
   store,

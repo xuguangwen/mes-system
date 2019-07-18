@@ -2,13 +2,13 @@
  * @Author: xgw 
  * @Date: 2019-05-06 09:49:31 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-05-08 17:35:55
+ * @Last Modified time: 2019-05-24 20:59:40
  */
 <!--工业流程图-->
 <template>
   <div class="flowChart" style="width: 100%; display: flex; justify-content: space-between">
-    <div :id="'chart-palette'+name" style="width: 200px; margin-right: 2px; background-color: #fff; border: solid 1px #aaa" v-if=pattern></div>
-    <div :id="'chart-diagram'+name" :class="[pattern?'drawPattern':'lookPattern']"></div>
+    <div :id="'palette-'+name" style="width: 200px; margin-right: 2px; background-color: #fff; border: solid 1px #aaa" v-if=palette></div>
+    <div :id="'diagram-'+name" :class="[pattern?'drawPattern':'lookPattern']"></div>
   </div>
 </template>
 <script>
@@ -19,6 +19,21 @@ export default {
     pattern: {
       type: Boolean,
       default: false
+    },
+    //有无工具栏,true有
+    palette:{
+      type:Boolean,
+      default:false
+    },
+    //绘图是否有网格
+    grid:{
+      type:Boolean,
+      default:false
+    },
+    //是否支持自定义执行单元名称
+    EUeditable:{
+      type:Boolean,
+      default:true
     },
     name: {
       type: String,
@@ -73,9 +88,9 @@ export default {
       );
       window.myDiagram = $(
         go.Diagram,
-        "chart-diagram" + _self.name, // must name or refer to the DIV HTML element
+        "diagram-" + _self.name, // must name or refer to the DIV HTML element
         {
-          grid: _self.pattern ? gridPattern : null,
+          grid: _self.grid ? gridPattern : null,
           initialContentAlignment: go.Spot.Center,
           allowDrop: true,
           "draggingTool.dragsLink": true,
@@ -119,7 +134,8 @@ export default {
                 margin: 8,
                 maxSize: new go.Size(160, NaN),
                 wrap: go.TextBlock.WrapFit,
-                editable: true
+                // editable: true
+                editable: _self.EUeditable,//是否可以编辑
               },
               new go.Binding("text").makeTwoWay()
             )
@@ -157,7 +173,7 @@ export default {
                 margin: 8,
                 maxSize: new go.Size(160, NaN),
                 wrap: go.TextBlock.WrapFit,
-                editable: true
+                editable: _self.EUeditable,//是否可以编辑
               },
               new go.Binding("text").makeTwoWay()
             )
@@ -226,18 +242,20 @@ export default {
         go.Link.Orthogonal;
       myDiagram.toolManager.relinkingTool.temporaryLink.routing =
         go.Link.Orthogonal;
-
-      if (_self.pattern) {
+      if (_self.palette) {
         // 初始化页面左边的调色板
-        window.myPalette = $(go.Palette, "chart-palette" + _self.name, {
+        window.myPalette = $(go.Palette, "palette-" + _self.name, {
           scrollsPageOnFocus: false,
           nodeTemplateMap: myDiagram.nodeTemplateMap,
           model: new go.GraphLinksModel([
             { category: "Start", text: "开始" },
             { category: "End", text: "结束" },
-            { category: "Next", text: "执行单元" }
+            { category: "Next", text: "操作单元"}
           ])
         });
+      }
+      if(_self.pattern){
+        myDiagram.isReadOnly = false; 
       }else{
         myDiagram.isReadOnly = true; //true:只读
       }
@@ -245,7 +263,11 @@ export default {
       myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
         //e.subject.part.data数据源
         let obj = e.subject.part.data;
-        _self.$emit("sendPaletteData",obj)
+        if(obj.category==="Start"||obj.category==="End"){
+          return false
+        }else{
+          _self.$emit("sendPaletteData",obj)
+        }
         // _self.load();
       });
     },
@@ -307,21 +329,9 @@ export default {
     },
     //绘图
     load() {
-      this.chartData.nodeDataArray = this.nodeDataArray;
-      let data = [];
-      this.chartData.nodeDataArray.forEach(n => {
-        if (n.category === "Next") {
-          n.state === "0" ? (n.category = "Next") : (n.category = "Next1");
-          data.push(n);
-        } else {
-          data.push(n);
-        }
-      });
-      this.chartData.linkDataArray = this.linkDataArray;
-      
       myDiagram.model = new go.GraphLinksModel(
-        this.chartData.nodeDataArray,
-        this.chartData.linkDataArray
+        this.nodeDataArray,
+        this.linkDataArray
       );
     }
   }
@@ -331,6 +341,7 @@ export default {
 .drawPattern {
   flex-grow: 1;
   border: solid 1px #aaa;
+  background-color: #fff;
   min-height: 400px;
 }
 .lookPattern {
@@ -338,7 +349,7 @@ export default {
   min-height: 200px;
   background-color: #fff;
   // border-radius: 10px;
-  border: solid 1px #aaa;
+  // border: solid 1px #aaa;
 }
 </style>
 

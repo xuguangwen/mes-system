@@ -2,12 +2,37 @@
  * @Author: xgw 
  * @Date: 2018-11-30 11:33:32 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-11 20:33:22
+ * @Last Modified time: 2019-06-01 15:00:03
  */
 
 <template>
   <div class="TreeTableDemo">
     <tree-table :data="data" :columns="columns" border />
+
+    <h1>测试全局filters</h1>
+    
+    <el-table :data="productionList" v-loading="loading">
+      <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+      <el-table-column label="生产计划编号" prop="plan_batch" show-overflow-tooltip></el-table-column>
+      <el-table-column label="产品名称" prop="product_name" show-overflow-tooltip></el-table-column>
+      <el-table-column label="计划负责人" prop="plan_responsible" show-overflow-tooltip></el-table-column>
+      <el-table-column label="计划时间" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span>¥{{ scope.row.price | toThousandFilter }}</span>
+          <span>测试：时间filter{{new Date() | formatTime('yyyy-MM-dd hh:mm:ss')}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <span v-text="scope.row.plan_production_status"></span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button type="text" @click="lookDetail(scope.row)">查看</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -19,6 +44,24 @@ export default {
   components: { treeTable },
   data() {
     return {
+      loading: false,
+      //分页
+      filter: {
+        page: 1,
+        pageSize: 10,
+        total: 0
+      },
+      productionList: [{
+        plan_batch:"#生产计划编号#",
+        product_name:"#产品名称#",
+        plan_responsible:"#计划负责人#",
+        plan_scheduled_start_time:"1312312312",
+        plan_scheduled_completion_time:"2019-05-06 18:00" ,
+        plan_production_status:"未开始",
+        price:12312312,
+      }],
+
+
       columns: [
         {
           text: "事件",
