@@ -1,67 +1,60 @@
-import axios from 'axios';
-import qs from 'qs';
-import {Message,MessageBox} from 'element-ui';
-import store from '@/store';
-import { getToken } from '@/utils/auth';
-//api
-import basicData from './modules/basicData';
-// 带cookie请求
-axios.defaults.withCredentials = true;
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://192.168.1.112:8000';
-axios.defaults.timeout=5000 // 请求超时时间
+
+import basicData from './modules/basicData';//基础数据api
+axios.defaults.timeout = 60000;
+axios.defaults.withCredentials = true
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+//自动化ip部署
+axios.defaults.baseURL = IPConfig.IP + ':' + IPConfig.Host
+// axios.defaults.baseURL="http://www.imes-inc.ser:8000"
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
   if (config.data && config.data.constructor != FormData) {
     config.data = qs.stringify(config.data);
-  }else if (store.getters.token) {
-    config.headers['token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    //不能这样设置，不然就会拦截所以的post header头只设置为当前。
+    // config.headers={
+    //   'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
+    // }
+    config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+  }
+
+  if (localStorage.getItem('token')) { //如果存在token，每个请求头都带上token
+    config.headers.Authorization = localStorage.getItem('token');
+  }
+  if (localStorage.getItem('nowCompany')) {
+    config.headers.corporationId = JSON.parse(localStorage.nowCompany).corporationId;
+  }
+  
+  if (config.url.indexOf('/m2_field_management/') > -1) {
+    if (localStorage.getItem("ReworkId")) {
+      config.headers.productionBatchReworkId = localStorage.getItem("ReworkId");
+    }
   }
   return config
 }, error => {
   return Promise.reject(error);
 });
-// response 拦截器
-axios.interceptors.response.use(response => {
-    //code为非20000是抛错 可结合自己业务进行修改
-    const res = response.data
-    if (res.code !== 20000) {
-      Message({
-        message: res.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        MessageBox.confirm(
-          '你已被登出，可以取消继续留在该页面，或者重新登录',
-          '确定登出', {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        ).then(() => {
-          store.dispatch('FedLogOut').then(() => {
-            location.reload() // 为了重新实例化vue-router对象 避免bug
-          })
-        })
-      }
-      return Promise.reject('error')
-    } else {
-      return response.data
-    }
+// http response 拦截器
+axios.interceptors.response.use(
+  response => {
+    return response;
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
-  }
-);
-
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          // 返回 401 清除token信息并跳转到登录页面
+          localStorage.clear();
+          router.replace({
+            path: '/login',
+          });
+          this.$message({
+            message: error.response.data.msg,
+            type: "error"
+          });
+      }
+    }
+    return Promise.reject(error.response.data) // 返回接口返回的错误信息
+  });
 export default {
   ...basicData
 }

@@ -1,6 +1,10 @@
-/**
- * 一些工具方法
+/*
+ * @Author: xgw 
+ * @Date: 2019-08-09 17:51:53 
+ * @Last Modified by:   xgw 
+ * @Last Modified time: 2019-08-09 17:51:53 
  */
+/*************************************一些工具方法*******************************************************/
 
 let SIGN_REGEXP = /([yMdhsm])(\1*)/g;
 let DEFAULT_PATTERN = 'yyyy-MM-dd';
@@ -17,6 +21,8 @@ const utils = {
   // 格式化日期
   formatDate: {
     format: function (date, pattern) {
+      //这里一定要加上这一句，因为后端sb 缘无故传null  时间就是1970 08 01
+      date = (new Date(date).getTime() == new Date(null).getTime() ? new Date() : date);
       pattern = pattern || DEFAULT_PATTERN;
       return pattern.replace(SIGN_REGEXP, function ($0) {
         switch ($0.charAt(0)) {
@@ -208,10 +214,10 @@ const utils = {
     let e = b.toString()
     try {
       c += d.split('.')[1].length;
-    } catch (f) {}
+    } catch (f) { }
     try {
       c += e.split('.')[1].length;
-    } catch (f) {}
+    } catch (f) { }
     return Number(d.replace('.', '')) * Number(e.replace('.', '')) / Math.pow(10, c);
   },
   // 除
@@ -221,21 +227,21 @@ const utils = {
     let f = 0
     try {
       e = a.toString().split('.')[1].length;
-    } catch (g) {}
+    } catch (g) { }
     try {
       f = b.toString().split('.')[1].length;
-    } catch (g) {}
+    } catch (g) { }
     c = Number(a.toString().replace('.', ''))
     d = Number(b.toString().replace('.', ''))
     return utils.mul(c / d, Math.pow(10, f - e))
   },
 
   // 下载文件
-  downloadFile(url) {
+  downloadFile(url, method) {
     let form = document.createElement('form')
     form.style.display = 'none'
     form.setAttribute('target', '')
-    form.setAttribute('method', 'post')
+    form.setAttribute('method', method)
     form.setAttribute('action', url)
     let input = document.createElement('input')
     input.setAttribute('type', 'hidden')
@@ -276,7 +282,7 @@ const utils = {
       result = "";
     } else {
       if (str.indexOf(".") === -1) {
-        str = str.replace(/[^\d]/g, "").replace(/\b(0+)/gi, "") + ".00";
+        str = str.replace(/[^\d]/g, "").replace(/\b(0+)/gi, "");
         result = str;
       } else {
         str1 = str
@@ -438,5 +444,143 @@ const utils = {
   getHeadNumAdapter(page = 1, pageSize = 0, index = 0) {
     return utils.mul(pageSize, page - 1) + index + 1
   },
+
+  //将string 类型的base64编码图片转化成File类型的图片文件，用于文件上传
+  dataURLtoFile(dataurl, filename = 'file') {
+    let arr = dataurl.split(',')
+    let mime = arr[0].match(/:(.*?);/)[1]
+    let suffix = mime.split('/')[1]
+    let bstr = atob(arr[1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new File([u8arr], `${filename}.${suffix}`, {
+      type: mime
+    })
+  },
+  //根据图片路径获取base64编码
+  getUrlBase64(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();
+    var dataURL = canvas.toDataURL("image/" + ext);
+    return dataURL;
+  },
+
+
+
+  // 汉字转阿拉伯（三 -- 3）
+  ChineseToNumber(chnStr) {
+    var chnNumChar = {
+      零: 0,
+      一: 1,
+      二: 2,
+      三: 3,
+      四: 4,
+      五: 5,
+      六: 6,
+      七: 7,
+      八: 8,
+      九: 9
+    };
+    var chnNameValue = {
+      十: { value: 10, secUnit: false },
+      百: { value: 100, secUnit: false },
+      千: { value: 1000, secUnit: false },
+      万: { value: 10000, secUnit: true },
+      亿: { value: 100000000, secUnit: true }
+    };
+    var rtn = 0;
+    var section = 0;
+    var number = 0;
+    var secUnit = false;
+    var str = chnStr.split("");
+
+    for (var i = 0; i < str.length; i++) {
+      var num = chnNumChar[str[i]];
+      if (typeof num !== "undefined") {
+        number = num;
+        if (i === str.length - 1) {
+          section += number;
+        }
+      } else {
+        var unit = chnNameValue[str[i]].value;
+        secUnit = chnNameValue[str[i]].secUnit;
+        if (secUnit) {
+          section = (section + number) * unit;
+          rtn += section;
+          section = 0;
+        } else {
+          section += number * unit;
+        }
+        number = 0;
+      }
+    }
+    return rtn + section;
+  },
+
+
+  //阿拉伯转中文汉字
+  SectionToChinese(section) {
+    var chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+    var chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+    var chnUnitChar = ["", "十", "百", "千"];
+    var strIns = '', chnStr = '';
+    var unitPos = 0;
+    var zero = true;
+    while (section > 0) {
+      var v = section % 10;
+      if (v === 0) {
+        if (!zero) {
+          zero = true;
+          chnStr = chnNumChar[v] + chnStr;
+        }
+      } else {
+        zero = false;
+        strIns = chnNumChar[v];
+        strIns += chnUnitChar[unitPos];
+        chnStr = strIns + chnStr;
+      }
+      unitPos++;
+      section = Math.floor(section / 10);
+    }
+    return chnStr;
+  },
+  NumberToChinese(num) {
+    var chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+    var chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+    var chnUnitChar = ["", "十", "百", "千"];
+    var unitPos = 0;
+    var strIns = '', chnStr = '';
+    var needZero = false;
+
+    if (num === 0) {
+      return chnNumChar[0];
+    }
+
+    while (num > 0) {
+      var section = num % 10000;
+      if (needZero) {
+        chnStr = chnNumChar[0] + chnStr;
+      }
+      strIns = this.SectionToChinese(section);
+      strIns += (section !== 0) ? chnUnitSection[unitPos] : chnUnitSection[0];
+      chnStr = strIns + chnStr;
+      needZero = (section < 1000) && (section > 0);
+      num = Math.floor(num / 10000);
+      unitPos++;
+    }
+    return chnStr;
+  }
+
+
+
+
 }
 export default utils

@@ -1,8 +1,8 @@
 /*
  * @Author: xgw 
  * @Date: 2018-12-24 14:53:09 
- * @Last Modified by:   xgw 
- * @Last Modified time: 2018-12-24 14:53:09 
+ * @Last Modified by: xgw
+ * @Last Modified time: 2019-08-09 17:37:19
  */
 
 <template>
@@ -71,7 +71,6 @@ export default {
           localStorage.setItem("ms_username", this.loginForm.username);
           this.$router.push("/");
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

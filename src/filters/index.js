@@ -2,7 +2,7 @@
  * @Author: xgw 
  * @Date: 2019-06-01 11:19:38 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-06-01 14:40:12
+ * @Last Modified time: 2019-08-09 17:34:37
  */
 
 /**************
@@ -41,6 +41,8 @@ export function timeAgo(time) {
 }
 //日期格式
 export function formatTime(date, pattern) {
+  //这里一定要加上这一句，因为后端sb 缘无故传null  时间就是1970 08 01
+  date = (new Date(date).getTime() == new Date(null).getTime() ? new Date() : date);
   pattern = pattern || DEFAULT_PATTERN;
   return pattern.replace(SIGN_REGEXP, function ($0) {
     switch ($0.charAt(0)) {
@@ -146,4 +148,61 @@ export function toThousandFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
-//
+//金额转中文
+export function toCapital(n) {
+  let fraction = ["角", "分"];
+  let digit = ["零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"];
+  let unit = [
+    ["元", "万", "亿"],
+    ["", "拾", "佰", "仟"]
+  ];
+  let head = n < 0 ? "欠" : "";
+  n = Math.abs(n);
+  let s = "";
+  for (let i = 0, l = fraction.length; i < l; i++) {
+    s += (
+      digit[Math.floor(n * 10000 * Math.pow(10, i) / 1000) % 10] +
+      fraction[i]
+    ).replace(/零./, "");
+  }
+  s = s || "整";
+  n = Math.floor(n);
+  for (let i = 0, l = unit[0].length; i < l && n > 0; i++) {
+    let p = "";
+    for (let j = 0, jl = unit[1].length; j < jl && n > 0; j++) {
+      p = digit[n % 10] + unit[1][j] + p;
+      n = Math.floor(n / 10);
+    }
+    s = p.replace(/(零.)*零$/, "").replace(/^$/, "零") + unit[0][i] + s;
+  }
+  return (
+    head +
+    s
+      .replace(/(零.)*零元/, "元")
+      .replace(/(零.)+/g, "零")
+      .replace(/^整$/, "零元整")
+  );
+}
+
+export function stateFilter(statusCode) {
+  //状态：0：完成生产 1、未生产 2、生产 3、暂停 4、关闭计划
+  switch (statusCode) {
+    case "0":
+      return "已完成";
+      break;
+    case "1":
+      return "未生产";
+      break;
+    case "2":
+      return "生产中";
+      break;
+    case "3":
+      return "暂停中";
+      break;
+    case "4":
+      return "已关闭";
+      break;
+    default:
+      break;
+  }
+}

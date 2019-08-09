@@ -2,13 +2,15 @@
  * @Author: xgw 
  * @Date: 2019-01-17 11:31:16 
  * @Last Modified by: xgw
- * @Last Modified time: 2019-01-19 14:48:21
+ * @Last Modified time: 2019-08-09 16:03:37
  */
 
 <template>
-  <div class="px-3 py-3">
-    <div id="main_ganntChart" style="width:1200px; height:500px;position: absolute; top: 10%; left: 10%;"></div>
-    <h1>echarts这里只能试用3.x版本</h1>
+  <div class="gannt">
+    <h1 class="my-3 center">echarts这里只能试用3.x版本</h1>
+    <div class="px-3 my-3">
+      <div id="main_ganntChart" style="width:1200px; height:500px;position: absolute; top: 10%; left: 10%;"></div>
+    </div>
   </div>
 </template>
 <script>

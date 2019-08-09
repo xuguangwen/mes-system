@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "babel-polyfill": "^6.23.0",
-    "element-ui": "^2.4.5",
+    "element-ui": "^2.11.1",
     "gojs": "^2.0.9",
     "js-cookie": "2.2.0",
     "moment": "^2.24.0",
