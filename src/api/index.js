@@ -1,5 +1,6 @@
 
 import basicData from './modules/basicData';//基础数据api
+import axios from 'axios'
 axios.defaults.timeout = 60000;
 axios.defaults.withCredentials = true
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
