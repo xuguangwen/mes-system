@@ -115,11 +115,17 @@ export const constantRouterMap = [
                 component: () =>
                   import('@/views/graph/create/planFlow.vue')
               },
+              // {
+              //   path: "/graph/create/calendarChart",
+              //   meta: { title: "计划日历图" },
+              //   component: () =>
+              //     import('@/views/graph/create/calendarChart.vue')
+              // },
               {
                 path: "/graph/create/calendarChart",
                 meta: { title: "计划日历图" },
                 component: () =>
-                  import('@/views/graph/create/calendarChart.vue')
+                  import('@/views/graph/create/planCalendar.vue')
               }
             ]
           },
